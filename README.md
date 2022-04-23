@@ -5,7 +5,7 @@
 
 寫程式時，第一步，先能確認可以將字串畫出來，開心！
 
-![step01.png](step01.png)
+![step01.png](figure/step01.png)
 
 ```processing
 //看到網友林仕風的問題，要設計一個撲克牌遊戲，
