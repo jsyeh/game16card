@@ -7,8 +7,22 @@
 //i=2 Q
 //i=3 J
 //(y座標）
+int [][]card=new int[4][4];//Step04 洗牌用的對照表
 void setup(){
-  size(500,250);
+  size(510,260);
+  for(int c=0; c<4*4; c++){
+    card[c%4][int(c/4)] = c;
+  }
+  shuffle();//Step04 洗牌
+}
+void shuffle(){//Step04 洗牌函式
+  for(int k=0; k<1000; k++){
+    int i1=int(random(4)), i2=int(random(4));
+    int j1=int(random(4)), j2=int(random(4));
+    int temp=card[i1][j1];
+    card[i1][j1]=card[i2][j2];
+    card[i2][j2]=temp;
+  }  
 }
 String []Face={"A","K","Q","J"};//Face[i]
 String []Suit={"黑桃","紅心","紅磚","梅花"};//Suit[j]
@@ -23,6 +37,7 @@ void drawCard(String t, int i, int j){
 
 void draw(){
   background(255);
+  strokeWeight(1);
   textAlign(CENTER,CENTER);
   for(int i=0; i<4; i++){
     drawCard(Face[i], i, -1);
@@ -33,7 +48,13 @@ void draw(){
   
   for(int i=0; i<4; i++){
     for(int j=0; j<4; j++){
-      drawCard(Suit[j]+Face[i], i, j);
+      //step04: 將洗牌的結果 card[i][j] 換算出花色牌面
+      int ii = card[i][j]%4, jj=int(card[i][j]/4);
+      drawCard(Suit[jj]+Face[ii], i, j);
     }//step01: 先結合字串，以印出卡片花色＋牌面
   }
+  
+  noFill();//畫出右下角黑色大框，讓畫面重點更清楚
+  strokeWeight(2);
+  rect(100,50,400,200);
 }
