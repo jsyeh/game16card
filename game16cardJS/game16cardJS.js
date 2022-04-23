@@ -51,7 +51,7 @@ var Face = [ "A", 'K', 'Q', 'J' ];// Face[i]
 var Suit = [ '黑桃', '紅心', '紅磚', '梅花'];// Suit[j]
 function drawCard(t, i, j) {
     fill(255);
-    rect(w + w * j, h + h * i, w, h);
+    rect(5+w + w * j, 5+h + h * i, w, h, 10,10,10,10);
   //4x4的卡片區 適時字變紅色
   if(i>=0 && t.charAt(0)=='紅') fill('#ff0000');
   else fill(0);
@@ -59,8 +59,9 @@ function drawCard(t, i, j) {
 }//step02: 做出函式 drawCard()來簡化程式碼
 
 function draw() {
-    background(255);
+    background(255,255,191);
     strokeWeight(1);
+    stroke(0);
     textAlign(CENTER,CENTER);
     for(var i=0; i<4; i++){
         drawCard(Face[i], i, -1);
@@ -75,14 +76,15 @@ function draw() {
             drawCard( Suit[jj] + Face[ii], i, j);
             if(usedPos[ i * 4 + j ] == false){//step05 模擬時，沒用的牌半透明
                 fill(255,128); 
-                rect(w + j * w, h + i * h, w, h);
+                rect(5+w + j * w, 5+h + i * h, w, h, 10, 10, 10, 10);
             }
         }//step01: 先結合字串，以印出卡片花色＋牌面
     }
   
     noFill();//畫出右下角黑色大框，讓畫面重點更清楚
-    strokeWeight(2);
-    rect(w, h, w * 4, h * 4);
+    strokeWeight(5);
+    rect(5+w, 5+h, w * 4, h * 4);
+    strokeWeight(1);
   
     if(arrowN!=-1){//step05 draw Arrow
         var line="";
@@ -101,7 +103,7 @@ function draw() {
     drawCard("開始玩", 5, 2);
 }
 function mousePressed() {//step05 模擬遊戲進行
-    var i = int(mouseY / h) - 1, j = int(mouseX / w) - 1;
+    var i = int((mouseY-5) / h) - 1, j = int((mouseX-5) / w) - 1;
     if(i==5 && j==0) myShuffle();//先洗牌
     if(i==5 && j==2) genArrow();//開始玩
 }
@@ -130,7 +132,11 @@ function nextCard(c){ // 下一張的位置
 function drawArrow(c1, c2){
     var i=int(c1/4), j=int(c1%4);
     var i2=int(c2/4), j2=int(c2%4);
+    stroke(255,0,0,128);
+    strokeWeight(5);
     line( w + w / 2 + j * w, h + h / 2 + i * h, w + w / 2 + j2 * w, h + h / 2 + i2 * h); 
+    stroke(0);
+    strokeWeight(1);
 }
 
 function initializeFields() {
