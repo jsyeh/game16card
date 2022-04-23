@@ -9,23 +9,27 @@
 //(y座標）
 int [][]card=new int[4][4];//Step04 洗牌用的對照表
 void setup(){
-  size(510,260);
+  size(610,360);
   for(int c=0; c<4*4; c++){
-    card[c%4][int(c/4)] = c;
+    card[int(c/4)][c%4] = c;
   }
-  shuffle();//Step04 洗牌
 }
+
 void shuffle(){//Step04 洗牌函式
   for(int k=0; k<1000; k++){
-    int i1=int(random(4)), i2=int(random(4));
-    int j1=int(random(4)), j2=int(random(4));
-    int temp=card[i1][j1];
-    card[i1][j1]=card[i2][j2];
+    int i=int(random(4)), j=int(random(4));
+    int i2=int(random(4)), j2=int(random(4));
+    int temp=card[i][j];
+    card[i][j]=card[i2][j2];
     card[i2][j2]=temp;
-  }  
+  }
+  arrowN=-1;//step05 重設箭頭
+  for(int i=0; i<16; i++) used[i]=false;
 }
+
 String []Face={"A","K","Q","J"};//Face[i]
 String []Suit={"黑桃","紅心","紅磚","梅花"};//Suit[j]
+
 void drawCard(String t, int i, int j){
   fill(255);
   rect(100+100*j, 50+50*i, 100,50);
@@ -49,12 +53,63 @@ void draw(){
   for(int i=0; i<4; i++){
     for(int j=0; j<4; j++){
       //step04: 將洗牌的結果 card[i][j] 換算出花色牌面
-      int ii = card[i][j]%4, jj=int(card[i][j]/4);
+      int ii = int(card[i][j]/4), jj=card[i][j]%4;
       drawCard(Suit[jj]+Face[ii], i, j);
+      if(used[i*4+j]==false){//step05 模擬時，沒用的牌半透明
+        fill(255,128); rect(100+j*100,50+i*50,100,50);
+      }
     }//step01: 先結合字串，以印出卡片花色＋牌面
   }
   
   noFill();//畫出右下角黑色大框，讓畫面重點更清楚
   strokeWeight(2);
   rect(100,50,400,200);
+  
+  if(arrowN!=-1){//step05 draw Arrow
+    String line="";
+    for(int i=0; i<arrowN; i++){
+      int ii=int(arrow[i]/4), jj=arrow[i]%4;
+      int c = card[ii][jj];
+      line += " "+Suit[c%4]+Face[int(c/4)];
+      if(i==arrowN-1) break;
+      drawArrow( arrow[i], arrow[i+1] );
+    }
+    fill(0);text("你能翻"+arrowN+"張牌: "+line, 20,250, width-200,50);
+  }
+  drawCard("先洗牌", 5, 0);
+  drawCard("開始玩", 5, 2);
+}
+
+void mousePressed(){//step05 模擬遊戲進行
+  int i=int(mouseY/50)-1, j=int(mouseX/100)-1;
+  if(i==5 && j==0) shuffle();//先洗牌
+  if(i==5 && j==2) genArrow();//開始玩
+}
+
+int [] arrow=new int[17];//arrow to the next card
+int arrowN=-1;
+
+boolean [] used=new boolean[16];//step05: 對應的格子有無走過
+void genArrow(){//step05 用箭頭模擬遊戲進行
+  for(int i=0; i<16; i++) used[i]=false;
+  used[15]=true;//走過這張卡片
+  arrow[0]=15;//右下角的卡片，存的是位置15
+  arrowN=1;
+  for(int i=0; i<16-1; i++){
+    arrow[i+1] = nextCard(arrow[i]);
+    if(used[arrow[i+1]]==true) break;//如果卡片走過，就不能走過去
+    used[arrow[i+1]]=true;//走過下一張卡片
+    arrowN++;
+  }
+}
+
+int nextCard(int c){//下一張的位置
+  int i=int(c/4), j=c%4;
+  return card[i][j];
+}
+
+void drawArrow(int c1, int c2){
+  int i=int(c1/4), j=int(c1%4);
+  int i2=int(c2/4), j2=int(c2%4);
+  line( 100+50+j*100, 50+25+i*50, 100+50+j2*100, 50+25+i2*50); 
 }
