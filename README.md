@@ -1,7 +1,16 @@
 # game16card
-設計一個撲克牌遊戲，只用16牌，隨機洗牌，放成4x4矩陣，再翻牌
+設計一個撲克牌遊戲，只用16牌，隨機洗牌，放成4x4矩陣，再翻牌。
 
-![final.png](figure/final.png)
+這個程式，是先用 Processinga 開發，之後再逐行翻譯成 p5.js 程式。
+
+作者：葉正聖 jsyeh@mail.mcu.edu.tw
+
+## p5.js 範例
+
+[互動網頁示範](https://jsyeh.org/game16card/game16cardJS/)
+
+[![og-facebook.png](game16cardJS/og-facebook.png)](https://jsyeh.org/game16card/game16cardJS/)
+
 
 ## step01 先用字串畫出圖
 
@@ -119,7 +128,7 @@ void draw(){
 
 ## step04 亂數洗牌
 
-有了前面的基礎，便能嘗試洗牌的動作。使用 `card[i][j]` 做出卡片對照表，這時候只要把 Card[i][j] 進行洗牌（shuffle），便能照著之前的基礎，畫出全部的牌，呈現洗牌的結果。
+有了前面的基礎，便能嘗試洗牌的動作。使用 `card[i][j]` 做出卡片對照表，這時候只要把 `card[i][j]` 進行洗牌（shuffle），便能照著之前的基礎，畫出全部的牌，呈現洗牌的結果。
 
 ![step04.png](figure/step04.png)
 
@@ -313,3 +322,6 @@ void drawArrow(int c1, int c2){
   line( 100+50+j*100, 50+25+i*50, 100+50+j2*100, 50+25+i2*50); 
 }
 ```
+## 最後結果
+![final.png](figure/final.png)
+
