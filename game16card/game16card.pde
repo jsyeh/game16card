@@ -1,3 +1,4 @@
+//作者：葉正聖 jsyeh@mail.mcu.edu.tw
 //看到網友林仕風的問題，要設計一個撲克牌遊戲，
 //只用16牌，隨機洗牌，放成4x4矩陣，再翻牌
 //Step03: 解決之前 i,j 錯亂的問題,並加紅色
@@ -15,7 +16,7 @@ void setup(){
   }
 }
 
-void shuffle(){//Step04 洗牌函式
+void myShuffle(){//Step04 洗牌函式
   for(int k=0; k<1000; k++){
     int i=int(random(4)), j=int(random(4));
     int i2=int(random(4)), j2=int(random(4));
@@ -40,7 +41,7 @@ void drawCard(String t, int i, int j){
 }//step02: 做出函式 drawCard()來簡化程式碼
 
 void draw(){
-  background(255);
+  background(255,255,191);//淡黃色背景
   strokeWeight(1);
   textAlign(CENTER,CENTER);
   for(int i=0; i<4; i++){
@@ -82,7 +83,7 @@ void draw(){
 
 void mousePressed(){//step05 模擬遊戲進行
   int i=int(mouseY/50)-1, j=int(mouseX/100)-1;
-  if(i==5 && j==0) shuffle();//先洗牌
+  if(i==5 && j==0) myShuffle();//先洗牌
   if(i==5 && j==2) genArrow();//開始玩
 }
 
@@ -111,5 +112,9 @@ int nextCard(int c){//下一張的位置
 void drawArrow(int c1, int c2){
   int i=int(c1/4), j=int(c1%4);
   int i2=int(c2/4), j2=int(c2%4);
+  stroke(255,0,0,128);//半透明紅色線，畫抽排的順序
+  strokeWeight(5);
   line( 100+50+j*100, 50+25+i*50, 100+50+j2*100, 50+25+i2*50); 
+  stroke(0);//還原成原來的筆觸
+  strokeWeight(1);
 }
